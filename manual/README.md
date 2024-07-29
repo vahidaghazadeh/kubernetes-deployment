@@ -445,13 +445,15 @@ Repeat the following steps on each worker node to create a cluster:
     > [!NOTE]
     > If you encounter the following error while running kubectl get nodes
     >
-    > ``` 
-    > kubernetes couldn't get current server API group list: Get "http://localhost:{API_PORT}/api?timeout=32s": dial tcp 127.0.0.1::{API_PORT}: connect: connection refused
-    > ```
+    >  
+    > > kubernetes couldn't get current server API group list: Get "http://localhost:{API_PORT}/api?timeout=32s": dial tcp 127.0.0.1::{API_PORT}: connect: connection refused
+    > 
     > 
     > Use this command
     > 
+    > ```shell
     > sudo kubectl get nodes --kubeconfig /etc/kubernetes/admin.conf
+    > ```
 
 ### Conclusion
 
