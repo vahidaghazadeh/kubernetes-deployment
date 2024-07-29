@@ -437,24 +437,24 @@ Repeat the following steps on each worker node to create a cluster:
     > [!NOTE]
     > Replace ***[master-node-ip]***, ***[token]***, and ***[hash]*** with the values from the kubeadm join command output.
 4. After a few minutes, switch to the master server and enter the following command to check the status of the nodes:
-    ```shell
-    kubectl get nodes
-    ```
-    The system displays the master node and the worker nodes in the cluster.
-    
-    > [!NOTE]
-    > 
-    > If you encounter the following error while running kubectl get nodes
-    >
-    >  
-    > > kubernetes couldn't get current server API group list: Get "http://localhost:{API_PORT}/api?timeout=32s": dial tcp 127.0.0.1::{API_PORT}: connect: connection refused
-    > 
-    > 
-    > Use this command
-    > 
-    > ```shell
-    > sudo kubectl get nodes --kubeconfig /etc/kubernetes/admin.conf
-    > ```
+```shell
+kubectl get nodes
+```
+The system displays the master node and the worker nodes in the cluster.
+
+> [!NOTE]
+> 
+> If you encounter the following error while running kubectl get nodes
+>
+>  
+> > kubernetes couldn't get current server API group list: Get "http://localhost:{API_PORT}/api?timeout=32s": dial tcp 127.0.0.1::{API_PORT}: connect: connection refused
+> 
+> 
+> Use this command
+> 
+> ```shell
+> sudo kubectl get nodes --kubeconfig /etc/kubernetes/admin.conf
+> ```
 
 ### Conclusion
 
