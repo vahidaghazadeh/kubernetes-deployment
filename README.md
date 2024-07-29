@@ -36,8 +36,7 @@ This project provides various methods for setting up a Kubernetes cluster. You c
 > If this meets your needs, or you would like to change, or want to contribute to the project, let me know!
 
 
-> [!CAUTION]
-> ### Disclaimer
+> [!CAUTION] Disclaimer
 > - The implementation and use of the provided code and scripts are conducted at the user’s own risk. While every effort has been made to ensure that the instructions and code provided are accurate and reliable, the authors and contributors of these resources cannot guarantee that they will be error-free or suitable for every environment.
 > - By using these scripts and configurations, you acknowledge and accept that any potential side effects, including but not limited to system instability, data loss, or unintended configurations, are the responsibility of the user. It is strongly advised to thoroughly test the configurations in a non-production environment before applying them to critical systems.
 > - The authors and contributors disclaim any liability for damages or issues arising from the use of the provided materials. Always ensure that you have appropriate backups and recovery plans in place when implementing changes to your system.
