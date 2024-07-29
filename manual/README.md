@@ -443,6 +443,7 @@ Repeat the following steps on each worker node to create a cluster:
     The system displays the master node and the worker nodes in the cluster.
     
     > [!NOTE]
+    > 
     > If you encounter the following error while running kubectl get nodes
     >
     >  
