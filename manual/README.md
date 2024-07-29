@@ -48,7 +48,7 @@ Ensure all packages are up to date:
 sudo apt update
 ```
 
-> ### ***NOTE***
+> [!NOTE]
 > 
 > If you have limited access to the [pkgs.k8s](https://www.pkgs.k8s.io) repository, you can use dns services, and if the dns service does not remove the access limitation, you can use dl.k8s.io to get the binary file.
 > ### Install kubectl binary with curl on Linux
@@ -89,7 +89,7 @@ sudo apt update
 > ```shell
 > sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 > ```
-> > NOTE:
+> > [!NOTE]
 > >
 > > If you do not have root access on the target system, you can still install kubectl to the ~/.local/bin directory:
 > > ```shell
@@ -124,7 +124,7 @@ sudo apt install kubeadm kubelet kubectl
 ```shell 
 sudo apt-mark hold kubeadm kubelet kubectl
 ```
-> ***NOTE***
+> [!NOTE]
 > 
 > The process presented in this tutorial prevents APT from automatically updating Kubernetes. For instructions on how to update, please see the official
 > 
@@ -288,7 +288,7 @@ sudo nano /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
 ```shell
 Environment="KUBELET_EXTRA_ARGS=--fail-swap-on=false"
 ```
-> ***NOTE***
+> [!NOTE]
 > If the kubelet.service.d directory was not created, you can create the kubelet service directory and file.
 > ```shell
 > sudo mkdir /etc/systemd/system/kubelet.service.d
@@ -365,7 +365,7 @@ mkdir -p $HOME/.kube
 ```shell
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 ```
-> ***NOTE***
+> [!NOTE]
 > If the admin.conf file does not exist in the path, copy the ***kubelet.conf*** file from the ***etc/kubernetes*** path
 > ```shell
 > mv /etc/kubernetes/kubelet.conf /etc/kubernetes/admin.conf
@@ -399,7 +399,7 @@ sudo systemctl stop apparmor && sudo systemctl disable apparmor
 ```shell
 sudo systemctl restart containerd.service
 ```
-> ***NOTE***
+> [!NOTE]
 > If you encounter an error while restarting containerd, delete the config.toml file from /etc/containerd
 > ```shell
 > sudo rm -rf /etc/containerd/config.toml
@@ -434,7 +434,7 @@ sudo systemctl restart containerd.service
 ```shell
 sudo kubeadm join [master-node-ip]:6443 --token [token] --discovery-token-ca-cert-hash sha256:[hash]
 ```
-> ***NOTE***
+> [!NOTE]
 > Replace ***[master-node-ip]***, ***[token]***, and ***[hash]*** with the values from the kubeadm join command output.
 4. After a few minutes, switch to the master server and enter the following command to check the status of the nodes:
 ```shell
@@ -442,7 +442,7 @@ kubectl get nodes
 ```
 The system displays the master node and the worker nodes in the cluster.
 
-> ***NOTE***
+> [!NOTE]
 > If you encounter the following error while running kubectl get nodes
 >
 > ``` 
@@ -452,230 +452,6 @@ The system displays the master node and the worker nodes in the cluster.
 > Use this command
 > 
 > sudo kubectl get nodes --kubeconfig /etc/kubernetes/admin.conf
-
-# Installation, setup and deployment of Kubernetes with Ansible:
-And finally, you can use Ansible to automatically deploy the Kubernetes orchestration to install, setup, and deploy.
-
-To convert this installation guide into an Ansible playbook, we'll structure it into tasks within a playbook that will execute each of the shell commands provided in the document. Here is the Ansible playbook to perform the installation of Docker and Kubernetes as described:
-
-To install Kubernetes in Ansible, we structure it into tasks in a playbook that execute each shell command. Here's the Ansible playbook for running a Docker and Kubernetes installation:
-
-ansible.yaml file:
-```yaml
----
-- name: Setup Docker and Kubernetes
-  hosts: all
-  become: yes
-  tasks:
-    - name: Update the package list
-      apt:
-        update_cache: yes
-
-    - name: Install Docker
-      apt:
-        name: docker.io
-        state: present
-
-    - name: Remove conflicting packages
-      apt:
-        name:
-          - docker.io
-          - docker-doc
-          - docker-compose
-          - podman-docker
-          - containerd
-          - runc
-        state: absent
-
-    - name: Install required packages
-      apt:
-        name:
-          - ca-certificates
-          - curl
-          - gnupg
-        state: present
-
-    - name: Enable Docker to launch on boot
-      systemd:
-        name: docker
-        enabled: yes
-
-    - name: Ensure Docker is running
-      systemd:
-        name: docker
-        state: started
-
-    - name: Add Kubernetes signing key
-      command: curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
-      args:
-        creates: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
-
-    - name: Add Kubernetes repository
-      copy:
-        dest: /etc/apt/sources.list.d/kubernetes.list
-        content: "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.30/deb/ /"
-
-    - name: Update the package list after adding Kubernetes repo
-      apt:
-        update_cache: yes
-
-    - name: Install Kubernetes tools
-      apt:
-        name:
-          - kubeadm
-          - kubelet
-          - kubectl
-        state: present
-
-    - name: Hold Kubernetes tools at current version
-      apt:
-        name:
-          - kubeadm
-          - kubelet
-          - kubectl
-        state: present
-        mark_hold: yes
-
-    - name: Verify kubeadm installation
-      command: kubeadm version
-      register: kubeadm_version
-      ignore_errors: yes
-
-    - name: Disable swap
-      command: swapoff -a
-
-    - name: Remove swap entry from /etc/fstab
-      lineinfile:
-        path: /etc/fstab
-        regexp: '^\s*([^#\s]+\s+){2,}swap\s'
-        state: absent
-
-    - name: Load required kernel modules
-      copy:
-        dest: /etc/modules-load.d/containerd.conf
-        content: |
-          overlay
-          br_netfilter
-
-    - name: Load kernel module overlay
-      command: modprobe overlay
-      ignore_errors: yes
-
-    - name: Load kernel module br_netfilter
-      command: modprobe br_netfilter
-      ignore_errors: yes
-
-    - name: Configure sysctl for Kubernetes
-      copy:
-        dest: /etc/sysctl.d/kubernetes.conf
-        content: |
-          net.bridge.bridge-nf-call-ip6tables = 1
-          net.bridge.bridge-nf-call-iptables = 1
-          net.ipv4.ip_forward = 1
-
-    - name: Apply sysctl params
-      command: sysctl --system
-
-    - name: Set hostname
-      command: hostnamectl set-hostname "{{ inventory_hostname }}"
-
-    - name: Add hosts entries
-      lineinfile:
-        path: /etc/hosts
-        line: "{{ item }}"
-      with_items: "{{ groups['all'] | map('extract', hostvars, ['ansible_host', 'inventory_hostname']) | map('join', ' ') | list }}"
-
-    - name: Configure kubelet cgroup driver
-      copy:
-        dest: /etc/default/kubelet
-        content: |
-          KUBELET_EXTRA_ARGS="--cgroup-driver=cgroupfs"
-
-    - name: Restart kubelet
-      systemd:
-        name: kubelet
-        state: restarted
-
-    - name: Configure Docker daemon
-      copy:
-        dest: /etc/docker/daemon.json
-        content: |
-          {
-            "exec-opts": ["native.cgroupdriver=systemd"],
-            "log-driver": "json-file",
-            "log-opts": {
-              "max-size": "100m"
-            },
-            "storage-driver": "overlay2"
-          }
-
-    - name: Restart Docker
-      systemd:
-        name: docker
-        state: restarted
-
-    - name: Configure kubelet service
-      copy:
-        dest: /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
-        content: |
-          [Service]
-          Environment="KUBELET_KUBECONFIG_ARGS=--bootstrap-kubeconfig=/etc/kubernetes/bootstrap-kubelet.conf --kubeconfig=/etc/kubernetes/kubelet.conf"
-          Environment="KUBELET_CONFIG_ARGS=--config=/var/lib/kubelet/config.yaml"
-          Environment="KUBELET_EXTRA_ARGS=--fail-swap-on=false"
-          EnvironmentFile=-/var/lib/kubelet/kubeadm-flags.env
-          EnvironmentFile=-/etc/default/kubelet
-          ExecStart=
-          ExecStart=/usr/bin/kubelet $KUBELET_KUBECONFIG_ARGS $KUBELET_CONFIG_ARGS $KUBELET_KUBEADM_ARGS $KUBELET_EXTRA_ARGS
-
-    - name: Reload kubelet configuration
-      systemd:
-        name: kubelet
-        state: restarted
-        daemon_reload: yes
-
-    - name: Initialize Kubernetes on master node
-      when: inventory_hostname == 'k8s-master'
-      command: kubeadm init --control-plane-endpoint=k8s-master --upload-certs
-      register: kubeadm_init
-
-    - name: Create kube config directory
-      when: inventory_hostname == 'k8s-master'
-      file:
-        path: "{{ lookup('env', 'HOME') }}/.kube"
-        state: directory
-
-    - name: Copy admin.conf to kube config
-      when: inventory_hostname == 'k8s-master'
-      command: cp -i /etc/kubernetes/admin.conf {{ lookup('env', 'HOME') }}/.kube/config
-
-    - name: Deploy Pod network to cluster
-      when: inventory_hostname == 'k8s-master'
-      command: kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
-
-    - name: Untaint master node
-      when: inventory_hostname == 'k8s-master'
-      command: kubectl taint nodes --all node-role.kubernetes.io/control-plane-
-
-    - name: Stop and disable AppArmor
-      when: inventory_hostname != 'k8s-master'
-      command: systemctl stop apparmor && systemctl disable apparmor
-
-    - name: Restart containerd
-      when: inventory_hostname != 'k8s-master'
-      systemd:
-        name: containerd
-        state: restarted
-
-    - name: Join worker node to cluster
-      when: inventory_hostname != 'k8s-master'
-      command: "{{ item }}"
-      with_items: "{{ kubeadm_init.stdout_lines }}"
-      register: join_command
-      ignore_errors: yes
-
-```
-
-
 
 Conclusion
 

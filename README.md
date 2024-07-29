@@ -5,16 +5,16 @@ This project provides various methods for setting up a Kubernetes cluster. You c
 # Installation Methods
 1. ### Ansible
    > Ansible is a powerful automation tool that allows you to define and execute playbooks for configuration management. This method involves using Ansible to automate the setup of your Kubernetes cluster, including server preparation and Kubernetes installation. 
-   > - [Ansible Inventory and Playbook Documentation:]() This document provides details on creating the Ansible inventory file and playbooks required for setting up the Kubernetes cluster.
+   > - [Ansible Inventory and Playbook Documentation:](https://github.com/vahidaghazadeh/kubernetes-deployment/tree/main/ansible) This document provides details on creating the Ansible inventory file and playbooks required for setting up the Kubernetes cluster.
 2. ### Manual Setup
    > Manual Setup provides a hands-on approach to setting up the Kubernetes cluster without automation tools. This method is useful for understanding each step of the installation process.
-   > - [Manual Installation Documentation:]() This document outlines the steps for manually setting up Kubernetes, including server preparation and configuration.
+   > - [Manual Installation Documentation:](https://github.com/vahidaghazadeh/kubernetes-deployment/tree/main/manual) This document outlines the steps for manually setting up Kubernetes, including server preparation and configuration.
 3. ### Shell Script
    > Shell Script allows you to automate the Kubernetes setup process using a simple shell script. This method is suitable for users who prefer a script-based approach to configuration. 
-   > - [Shell Script Documentation:]() This document explains how to use the shell script to set up Kubernetes, including the content of the script and execution instructions.
+   > - [Shell Script Documentation:](https://github.com/vahidaghazadeh/kubernetes-deployment/tree/main/shell-script) This document explains how to use the shell script to set up Kubernetes, including the content of the script and execution instructions.
 4. ### Vagrant
    > Vagrant provides a way to manage virtual machine environments using configuration files. This method is useful for creating consistent development and testing environments. 
-   > - [Vagrant Setup Documentation:]() This document provides instructions on using Vagrant for setting up Kubernetes, including details on the Vagrantfile and associated setup script.
+   > - [Vagrant Setup Documentation:](https://github.com/vahidaghazadeh/kubernetes-deployment/tree/main/vargant) This document provides instructions on using Vagrant for setting up Kubernetes, including details on the Vagrantfile and associated setup script.
 
 
 ### Conclusion
@@ -30,6 +30,12 @@ Feel free to adjust the content based on your specific needs and preferences. Th
 - [Certificate management](https://kubernetes.io/docs/tasks/administer-cluster/kubeadm/kubeadm-certs/)
 - [Configuration API reference](https://kubernetes.io/docs/reference/config-api/)
 - [Configuration API reference](https://godoc.org/k8s.io/kubernetes/cmd/kubeadm/app/apis/kubeadm)
+
+### References
+- [Kubernetes](https://kubernetes.io)
+- [Ansible](https://www.ansible.com)
+- [Vagrant](https://www.vagrantup.com)
+- [Phoenixnap](https://phoenixnap.com)
 
 ### Disclaimer
 
