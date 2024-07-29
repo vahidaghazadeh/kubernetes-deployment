@@ -193,8 +193,7 @@ This document provides step-by-step instructions for setting up a Kubernetes clu
 > - If a worker node fails to join the cluster, check the join command and ensure the master node IP, token, and hash are correct.
 
 > [!NOTE]
-> This setup assumes a static IP address configuration. Adjust the /etc/hosts entries as needed for your network setup.
-> 
-> The script disables swap, which is required for Kubernetes to function correctly.
+> - This setup assumes a static IP address configuration. Adjust the /etc/hosts entries as needed for your network setup.
+> - The script disables swap, which is required for Kubernetes to function correctly.
 
 

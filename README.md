@@ -16,12 +16,6 @@ This project provides various methods for setting up a Kubernetes cluster. You c
    > Vagrant provides a way to manage virtual machine environments using configuration files. This method is useful for creating consistent development and testing environments. 
    > - [Vagrant Setup Documentation:](https://github.com/vahidaghazadeh/kubernetes-deployment/tree/main/vargant) This document provides instructions on using Vagrant for setting up Kubernetes, including details on the Vagrantfile and associated setup script.
 
-
-### Conclusion
-You can choose any of the provided methods based on your preference and requirements. Each method is designed to facilitate the deployment of a Kubernetes cluster and ensure a consistent setup process. For detailed instructions on each method, please refer to the respective documentation files linked above.
-
-Feel free to adjust the content based on your specific needs and preferences. This general document provides a clear overview and helps users navigate to the detailed documentation for each installation method.
-
 # Kubernetes
 - [Installing kubeadm](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/)
 - [Creating a cluster](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/)
@@ -37,16 +31,18 @@ Feel free to adjust the content based on your specific needs and preferences. Th
 - [Vagrant](https://www.vagrantup.com)
 - [Phoenixnap](https://phoenixnap.com)
 
-### Disclaimer
-
-> [!IMPORTANT]
-> 
-> The implementation and use of the provided code and scripts are conducted at the user’s own risk. While every effort has been made to ensure that the instructions and code provided are accurate and reliable, the authors and contributors of these resources cannot guarantee that they will be error-free or suitable for every environment.
-> 
-> By using these scripts and configurations, you acknowledge and accept that any potential side effects, including but not limited to system instability, data loss, or unintended configurations, are the responsibility of the user. It is strongly advised to thoroughly test the configurations in a non-production environment before applying them to critical systems.
-> 
-> The authors and contributors disclaim any liability for damages or issues arising from the use of the provided materials. Always ensure that you have appropriate backups and recovery plans in place when implementing changes to your system.
 
 > [!TIP]
-> 
-> If this meets your needs or you would like to change, or want to contribute to the project, let me know!
+> If this meets your needs, or you would like to change, or want to contribute to the project, let me know!
+
+
+> [!CAUTION]
+> ### Disclaimer
+> - The implementation and use of the provided code and scripts are conducted at the user’s own risk. While every effort has been made to ensure that the instructions and code provided are accurate and reliable, the authors and contributors of these resources cannot guarantee that they will be error-free or suitable for every environment.
+> - By using these scripts and configurations, you acknowledge and accept that any potential side effects, including but not limited to system instability, data loss, or unintended configurations, are the responsibility of the user. It is strongly advised to thoroughly test the configurations in a non-production environment before applying them to critical systems.
+> - The authors and contributors disclaim any liability for damages or issues arising from the use of the provided materials. Always ensure that you have appropriate backups and recovery plans in place when implementing changes to your system.
+
+### Conclusion
+You can choose any of the provided methods based on your preference and requirements. Each method is designed to facilitate the deployment of a Kubernetes cluster and ensure a consistent setup process. For detailed instructions on each method, please refer to the respective documentation files linked above.
+
+Feel free to adjust the content based on your specific needs and preferences. This general document provides a clear overview and helps users navigate to the detailed documentation for each installation method.
