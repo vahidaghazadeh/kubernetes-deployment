@@ -324,23 +324,23 @@ Your Kubernetes control-plane has initialized successfully!
 
 To start using your cluster, you need to run the following as a regular user:
 
-  mkdir -p $HOME/.kube
-  sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
-  sudo chown $(id -u):$(id -g) $HOME/.kube/config
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
 Alternatively, if you are the root user, you can run:
 
-  export KUBECONFIG=/etc/kubernetes/admin.conf
+export KUBECONFIG=/etc/kubernetes/admin.conf
 
 You should now deploy a pod network to the cluster.
 Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
-  https://kubernetes.io/docs/concepts/cluster-administration/addons/
+https://kubernetes.io/docs/concepts/cluster-administration/addons/
 
 You can now join any number of the control-plane node running the following command on each as root:
 
-  kubeadm join k8s-master:6443 --token v2e54c.928liszww0ocrfgi \
-    --discovery-token-ca-cert-hash sha256:b82240e87495f1c4870bfba31210279c38e580ecd46793eb35855699decd1dc8 \
-    --control-plane --certificate-key 9d18674d48476aa7246b799d6923ccdc7c3beffa1a060cb9c87f74fd93619681
+kubeadm join k8s-master:6443 --token v2e54c.928liszww0ocrfgi \
+--discovery-token-ca-cert-hash sha256:b82240e87495f1c4870bfba31210279c38e580ecd46793eb35855699decd1dc8 \
+--control-plane --certificate-key 9d18674d48476aa7246b799d6923ccdc7c3beffa1a060cb9c87f74fd93619681
 
 Please note that the certificate-key gives access to cluster sensitive data, keep it secret!
 As a safeguard, uploaded-certs will be deleted in two hours; If necessary, you can use
@@ -349,7 +349,7 @@ As a safeguard, uploaded-certs will be deleted in two hours; If necessary, you c
 Then you can join any number of worker nodes by running the following on each as root:
 
 kubeadm join k8s-master:6443 --token v2e54c.928liszww0ocrfgi \
-    --discovery-token-ca-cert-hash sha256:b82240e87495f1c4870bfba31210279c38e580ecd46793eb35855699decd1dc8 
+--discovery-token-ca-cert-hash sha256:b82240e87495f1c4870bfba31210279c38e580ecd46793eb35855699decd1dc8 
 ```
 12. Create a directory for the Kubernetes cluster:
 ```shell
