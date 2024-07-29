@@ -188,12 +188,9 @@ This document provides step-by-step instructions for setting up a Kubernetes clu
 
 > [!NOTE]
 > ### Troubleshooting
-> 
-> If the master node initialization fails, review the kubeadm-init.log file for errors.
-> 
-> Ensure that all nodes can communicate over the network and that the hostnames and IP addresses are correctly configured in /etc/hosts.
-> 
-> If a worker node fails to join the cluster, check the join command and ensure the master node IP, token, and hash are correct.
+> - If the master node initialization fails, review the kubeadm-init.log file for errors.
+> - Ensure that all nodes can communicate over the network and that the hostnames and IP addresses are correctly configured in /etc/hosts.
+> - If a worker node fails to join the cluster, check the join command and ensure the master node IP, token, and hash are correct.
 
 > [!NOTE]
 > This setup assumes a static IP address configuration. Adjust the /etc/hosts entries as needed for your network setup.
