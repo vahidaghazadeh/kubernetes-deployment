@@ -49,7 +49,7 @@ Ensure all packages are up to date:
 sudo apt update
 ```
 
-> [!NOTE]
+> [!NOTE] 
 > 
 > If you have limited access to the [pkgs.k8s](https://www.pkgs.k8s.io) repository, you can use dns services, and if the dns service does not remove the access limitation, you can use dl.k8s.io to get the binary file.
 > ### Install kubectl binary with curl on Linux
@@ -143,18 +143,13 @@ With the necessary tools installed, proceed to deploy the cluster. Follow the st
 This section shows you how to prepare the servers for a Kubernetes deployment. Execute the steps below on each server node:
 
 1. Disable all swap spaces with the swapoff command:
+
 > [!NOTE]
-> 
 > Swap space in Linux is an extension of physical RAM, offering virtual memory that helps maintain system stability and performance. It allows processes to continue running when RAM is fully used and prevents memory errors.
-> 
 > Swap space also enables hibernation and safeguards critical processes by temporarily offloading data. However, it should only be a complement to RAM because a system that relies on swap would suffer significant performance degradation.
-> 
 > Swap space (also known as swap memory or paging space) is space on a hard drive (HDD or SSD) that represents a substitute for physical (RAM) memory. This feature allows an operating system to temporarily move inactive or less frequently used memory pages from RAM to a designated area on the hard drive
-> 
 > Swap frees up RAM for more important tasks that require more processing power by transferring data to and from a designated disk space. The data interchange is called swapping, while the designated space is called swap space. The swapping rate and assertiveness are determined by a parameter called swappiness.
-> 
-> Operating systems like Windows or Linux provide a certain amount of swap space by default, which users can later change in accordance with their requirements. Users can also disable swap space, but that means that the kernel must kill some processes to create enough free RAM for new processes.
-> 
+> Operating systems like Windows or Linux provide a certain amount of swap space by default, which users can later change in accordance with their requirements. Users can also disable swap space, but that means that the kernel must kill some processes to create enough free RAM for new processes. 
 
 ```shell
 sudo swapoff -a
