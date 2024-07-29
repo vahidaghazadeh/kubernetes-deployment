@@ -1,0 +1,14 @@
+[all]
+k8s-master ansible_host=192.168.1.10 ansible_user=root
+k8s-worker01 ansible_host=192.168.1.11 ansible_user=ansible_user
+k8s-worker02 ansible_host=192.168.1.12 ansible_user=ansible_user
+
+[k8s-master]
+k8s-master
+
+[k8s-workers]
+k8s-worker01
+k8s-worker02
+
+[all:vars]
+ansible_python_interpreter=/usr/bin/python3

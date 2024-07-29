@@ -1,0 +1,146 @@
+---
+- name: Kubernetes Cluster Setup
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Update package list
+      apt:
+        update_cache: yes
+
+    - name: Install Docker
+      apt:
+        name: docker.io
+        state: present
+
+    - name: Remove unnecessary Docker packages
+      apt:
+        name:
+          - docker.io
+          - docker-doc
+          - docker-compose
+          - podman-docker
+          - containerd
+          - runc
+        state: absent
+
+    - name: Install required packages
+      apt:
+        name:
+          - ca-certificates
+          - curl
+          - gnupg
+        state: present
+
+    - name: Enable Docker service
+      systemd:
+        name: docker
+        enabled: yes
+        state: started
+
+    - name: Add Kubernetes signing key
+      command: curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key | gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+      args:
+        creates: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+
+    - name: Add Kubernetes repository
+      command: echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.30/deb/ /' | tee /etc/apt/sources.list.d/kubernetes.list
+      args:
+        creates: /etc/apt/sources.list.d/kubernetes.list
+
+    - name: Update package list after adding Kubernetes repository
+      apt:
+        update_cache: yes
+
+    - name: Install Kubernetes tools
+      apt:
+        name:
+          - kubeadm
+          - kubelet
+          - kubectl
+        state: present
+
+    - name: Hold Kubernetes packages to prevent automatic updates
+      apt:
+        name:
+          - kubeadm
+          - kubelet
+          - kubectl
+        state: present
+        hold: yes
+
+    - name: Verify kubeadm installation
+      command: kubeadm version
+
+- name: Set hostname for master node
+  hosts: k8s-master
+  become: yes
+  tasks:
+    - name: Set hostname
+      command: hostnamectl set-hostname k8s-master
+
+- name: Set hostname for worker nodes
+  hosts: k8s-workers
+  become: yes
+  tasks:
+    - name: Set hostname
+      command: hostnamectl set-hostname {{ inventory_hostname }}
+
+- name: Configure /etc/hosts on all nodes
+  hosts: all
+  become: yes
+  tasks:
+    - name: Add master and worker IPs to /etc/hosts
+      lineinfile:
+        path: /etc/hosts
+        line: "{{ item }}"
+      with_items:
+        - "192.168.1.10 k8s-master"
+        - "192.168.1.11 k8s-worker01"
+        - "192.168.1.12 k8s-worker02"
+
+- name: Initialize Kubernetes on master node
+  hosts: k8s-master
+  become: yes
+  tasks:
+    - name: Initialize Kubernetes
+      command: kubeadm init --control-plane-endpoint=k8s-master --upload-certs
+      register: kubeadm_init
+
+    - name: Create .kube directory
+      file:
+        path: $HOME/.kube
+        state: directory
+        mode: '0755'
+        owner: kuberunner
+        group: kuberunner
+
+    - name: Copy Kubernetes admin config
+      copy:
+        src: /etc/kubernetes/admin.conf
+        dest: $HOME/.kube/config
+        remote_src: yes
+        owner: kuberunner
+        group: kuberunner
+
+    - name: Set KUBECONFIG environment variable
+      lineinfile:
+        path: $HOME/.bashrc
+        line: export KUBECONFIG=$HOME/.kube/config
+
+    - name: Deploy pod network
+      command: kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
+      environment:
+        KUBECONFIG: $HOME/.kube/config
+
+    - name: Untaint master node
+      command: kubectl taint nodes --all node-role.kubernetes.io/control-plane-
+      environment:
+        KUBECONFIG: $HOME/.kube/config
+
+- name: Join worker nodes to the cluster
+  hosts: k8s-workers
+  become: yes
+  tasks:
+    - name: Join worker node to the cluster
+      command: "{{ hostvars['k8s-master'].kubeadm_init.stdout_lines[-1] }}"
