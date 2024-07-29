@@ -183,14 +183,15 @@ This document provides step-by-step instructions for setting up a Kubernetes clu
     ```
     The output should list the master and worker nodes with a status of Ready.
 
-### Troubleshooting
-- If the master node initialization fails, review the kubeadm-init.log file for errors.
-- Ensure that all nodes can communicate over the network and that the hostnames and IP addresses are correctly configured in /etc/hosts.
-- If a worker node fails to join the cluster, check the join command and ensure the master node IP, token, and hash are correct.
+> [!TIP]
+> By following this guide, you can quickly set up a Kubernetes cluster using Vagrant and shell scripts, ensuring consistency and reducing the potential for errors during manual configuration.
 
-### Notes
-- This setup assumes a static IP address configuration. Adjust the /etc/hosts entries as needed for your network setup.
-- The script disables swap, which is required for Kubernetes to function correctly.
+> [!Troubleshooting]
+> If the master node initialization fails, review the kubeadm-init.log file for errors.
+> Ensure that all nodes can communicate over the network and that the hostnames and IP addresses are correctly configured in /etc/hosts.
+> If a worker node fails to join the cluster, check the join command and ensure the master node IP, token, and hash are correct.
 
-
-By following this guide, you can quickly set up a Kubernetes cluster using Vagrant and shell scripts, ensuring consistency and reducing the potential for errors during manual configuration.
+> [!NOTE]
+> This script assumes a static IP address setup. Adjust the /etc/hosts configuration as needed for your network setup.
+> The script disables swap, which is required for Kubernetes to function correctly.
+> By following this guide, you can quickly set up a Kubernetes cluster using a shell script, ensuring consistency and reducing the potential for errors during manual configuration.
