@@ -317,6 +317,7 @@ sudo systemctl daemon-reload && sudo systemctl restart kubelet
 > [!WARNING]
 > ***Avoid Overlapping with Existing Networks:***
 > > Ensure that the CIDR range you choose does not overlap with any existing network used by your nodes, services, or external networks your cluster might interact with.
+> >
 > > ***Size of the Network:***
 > > 
 > > Choose a CIDR range that provides enough IP addresses for your pods. For example, ***10.244.0.0/16*** provides the same number of IP addresses as the range ***192.168.0.0/16.*** It gives you ***65,536*** IP addresses, which is usually enough for most clusters. If you expect a very large cluster, you might choose a larger range.
