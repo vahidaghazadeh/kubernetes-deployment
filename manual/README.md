@@ -314,11 +314,18 @@ Save the file and exit.
 sudo systemctl daemon-reload && sudo systemctl restart kubelet
 ```
 11. Finally, initialize the cluster by typing:
+> [!WARNING]
+> ***Avoid Overlapping with Existing Networks:***
+> > Ensure that the CIDR range you choose does not overlap with any existing network used by your nodes, services, or external networks your cluster might interact with.
+> ***Size of the Network:***
+> > 
+> > Choose a CIDR range that provides enough IP addresses for your pods. For example, ***10.244.0.0/16*** provides the same number of IP addresses as the range ***192.168.0.0/16.*** It gives you ***65,536*** IP addresses, which is usually enough for most clusters. If you expect a very large cluster, you might choose a larger range.
+
+A /16 subnet mask means that the first 16 bits of the IP address are used for the network portion, leaving the remaining 16 bits for host addresses.
 ```shell
-sudo kubeadm init --control-plane-endpoint=k8s-master --upload-certs
+sudo sudo kubeadm init --control-plane-endpoint=k8s-master --upload-certs --pod-network-cidr=10.244.0.0/16
 ```
 
-***Once the operation finishes, the output displays a kubeadm join command at the bottom. Make a note of this command, as you will use it to join the worker nodes to the cluster.***
 ```
 Your Kubernetes control-plane has initialized successfully!
 
@@ -351,6 +358,13 @@ Then you can join any number of worker nodes by running the following on each as
 kubeadm join k8s-master:6443 --token v2e54c.928liszww0ocrfgi \
 --discovery-token-ca-cert-hash sha256:b82240e87495f1c4870bfba31210279c38e580ecd46793eb35855699decd1dc8 
 ```
+> [!NOTE]
+> Once the operation finishes, the output displays a kubeadm join command at the bottom. Make a note of this command, as you will use it to join the worker nodes to the cluster.
+> If you don't remember the CA token and hash for any reason, you can create it in the master node
+> ```shell
+> kubeadm token create --print-join-command
+> ```
+
 12. Create a directory for the Kubernetes cluster:
 ```shell
 mkdir -p $HOME/.kube
@@ -358,6 +372,11 @@ mkdir -p $HOME/.kube
 13. Copy the configuration file to the directory:
 ```shell
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+```
+14. Check the kubeconfig file:
+> Ensure that ***kubectl*** is configured correctly and pointing to the right cluster. By default, ***kubectl*** uses the ***kubeconfig*** file located at ***$HOME/.kube/config*** . You can specify the ***kubeconfig*** file explicitly if it's located elsewhere:
+```shell
+export KUBECONFIG=$HOME/.kube/config
 ```
 > [!NOTE]
 > If the admin.conf file does not exist in the path, copy the ***kubelet.conf*** file from the ***etc/kubernetes*** path
@@ -368,7 +387,19 @@ sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 > sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 > ```
 >
-
+14. Verify the Kubernetes API server
+> Ensure that the ***Kubernetes API server*** is running. You can check the status of your Kubernetes cluster with:
+```shell
+sudo kubectl cluster-info
+```
+14. kubectl config current-context
+> List the available contexts and ensure you are using the correct one:
+```shell
+kubectl config get-contexts
+```
+```shell
+kubectl config use-context your-context-name
+```
 ## Step 4: Deploy Pod Network to Cluster
 A pod network is a way to allow communication between different nodes in the cluster. This tutorial uses the Flannel node network manager to create a pod network.
 
@@ -378,6 +409,8 @@ Apply the Flannel manager to the master node by executing the steps below:
 ```shell
 kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
 ```
+> [!NOTE]
+> If you encounter problems in Pod flannel startup and fail to Deploy Pod, you can get the Pod flannel file from this path.
 2. Untaint the node:
 ```shell
 kubectl taint nodes --all node-role.kubernetes.io/control-plane-
@@ -456,3 +489,37 @@ The system displays the master node and the worker nodes in the cluster.
 After following the steps presented in this article, you should have Kubernetes installed on Ubuntu. The article included instructions on installing the necessary packages and deploying Kubernetes on all your nodes.
 
 If you are a beginner with no experience in Kubernetes deployment, Minikube is a great place to start.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
