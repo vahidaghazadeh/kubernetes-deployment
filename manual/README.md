@@ -410,7 +410,10 @@ Apply the Flannel manager to the master node by executing the steps below:
 kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
 ```
 > [!NOTE]
-> If you encounter problems in Pod flannel startup and fail to Deploy Pod, you can get the Pod flannel file from this path.
+> If you encounter problems in Pod flannel startup and fail to Deploy Pod, [you can get the Pod flannel file from this path](https://github.com/vahidaghazadeh/kubernetes-deployment/blob/main/configs/kube-flannel.yml).
+> ```shell
+> kubectl apply -f https://github.com/vahidaghazadeh/kubernetes-deployment/blob/main/configs/kube-flannel.yml
+> ```
 2. Untaint the node:
 ```shell
 kubectl taint nodes --all node-role.kubernetes.io/control-plane-
